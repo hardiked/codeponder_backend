@@ -19,46 +19,59 @@ export const resolvers={
 	},
 
 	Mutation: {
-		login: async (_, {email,password},{session,redis,req})=>{
-			const user=await User.findOne({email:email}).select('email password confirmed forgotPasswordLocked')
-				
-				if(!user){
-					return  [{
+		login: async (_, {usernameOrEmail,password},{session,redis,req})=>{
+			const user = await User.findOne({$or: [ { username: usernameOrEmail }, { email: usernameOrEmail } ]})
+			if(!user){
+				return  {
+					errors: [{
 						path: "email",
-						message: invalidLogin
-					}];
+						message:"invalid login"
+					}],
+					user: null
 				}
-				if(!user.confirmed){
-					return [{
+			}
+			if(!user.confirmed){
+				return  {
+					errors: [{
 						path: "email",
-						message: emailNotVerified
-					}]
+						message:emailNotVerified
+					}],
+					user: null
 				}
+			}
 
-				if(user.forgotPasswordLocked){
-					return [{
+			if(user.forgotPasswordLocked){
+				return  {
+					errors: [{
 						path: "email",
 						message: forgotPassword
-					}]
+					}],
+					user: null
 				}
+			}
 
-				var validPassword=await bcrypt.compare(password,user.password);
-				console.log(validPassword);
-				if(!validPassword){
-					return [{
+			var validPassword=await bcrypt.compare(password,user.password);
+			if(!validPassword){
+				return  {
+					errors: [{
 						path: "password",
 						message: invalidPassword
-					}]
+					}],
+					user: null
 				}
+			}
 
-				session.userId=user.id;
-				if(req.sessionID){
-					await redis.lpush(`userSids:${user.id}`,req.sessionID);
+			session.userId=user.id;
+			if(req.sessionID){
+				await redis.lpush(`userSids:${user.id}`,req.sessionID);
+			}
+			await session.save(function(err){
+				console.log(err);
+			});
+			return  {
+					errors: null,
+					user: user
 				}
-				await session.save(function(err){
-					console.log(err);
-				});
-				return null;
 		}
 	}
 }

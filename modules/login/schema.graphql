@@ -1,9 +1,16 @@
 # import Error from '../../shared.graphql'
+# import User from '../me/schema.graphql'
+
 
 type Query{
 	bye2: String
 }
 
+type LoginResponse{
+	errors: [Error!]
+	user: User
+}
+
 type Mutation{
-	login(email: String!, password:String!): [Error!]
+	login(usernameOrEmail: String!, password:String!): LoginResponse!
 }

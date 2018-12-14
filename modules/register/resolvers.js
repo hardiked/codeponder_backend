@@ -9,15 +9,23 @@ import {createConfirmEmailLink} from '../../utils/createConfirmEmailLink';
 import {sendEmail} from '../../utils/sendEmail';
 
 const schema=yup.object().shape({
+	username: yup
+			.string()
+			.matches(/^[a-zA-Z0-9]*$/, "Only numbers and letters are allowed")
+			.min(3)
+			.max(30)
+			.required(),
 	email : yup
 			.string()
-			.min(3,emailNotLongEnough)
+			.min(5,emailNotLongEnough)
 			.max(255)
-			.email(invalidEmail),
+			.email(invalidEmail)
+			.required(),
 	password: yup
 			.string()
 			.min(3,passwordNotLongEnough)
 			.max(255)
+			.required()
 });
 
 export const resolvers={

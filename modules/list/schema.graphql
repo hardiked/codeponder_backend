@@ -1,5 +1,16 @@
 # import CodeReviewRequest from '../create_code_request/schema.graphql'
+# import User from '../me/schema.graphql'
+
+type list {
+    id: ID!
+    numDays: Int
+    codeUrl: String!
+    techTags: [String!]!
+    notes: String!
+    userId: String!
+    owner: User
+}
 
 type Query {
-    listCodeReviewRequest: [CodeReviewRequest!]!
+    listCodeReviewRequest: [list!]!
 }

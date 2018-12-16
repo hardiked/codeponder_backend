@@ -7,6 +7,13 @@ export const resolvers = {
         bye12: () => "Bye"
     },
 
+    CodeReviewRequest: {
+        owner: ({ userId }, _, __) => {
+            console.log("userId: ", userId);
+            return null;
+        }
+    },
+
     Mutation: {
         createCodeReviewRequest: async (_, { input }, { session }) => {
             if (!session || !session.userId) {

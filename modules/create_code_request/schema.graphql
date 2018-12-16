@@ -1,0 +1,31 @@
+# import Error from '../../shared.graphql'
+
+type Query {
+    bye12: String
+}
+
+input createCodeReviewRequestInput {
+    numDays: Int
+    codeUrl: String!
+    techTags: [String!]!
+    notes: String!
+}
+
+type CodeReviewRequest {
+    id: ID!
+    numDays: Int
+    codeUrl: String!
+    techTags: [String!]!
+    notes: String!
+}
+
+type createCodeReviewRequestResponse {
+    errors: [Error!]
+    codeReview: CodeReviewRequest
+}
+
+type Mutation {
+    createCodeReviewRequest(
+        input: createCodeReviewRequestInput!
+    ): createCodeReviewRequestResponse!
+}

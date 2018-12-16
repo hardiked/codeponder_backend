@@ -1,0 +1,5 @@
+# import CodeReviewRequest from '../create_code_request/schema.graphql'
+
+type Query {
+    listCodeReviewRequest: [CodeReviewRequest!]!
+}

@@ -1,0 +1,16 @@
+type Query {
+    bye13: String
+}
+
+input createOfferInput {
+    userId: String!
+    codeReviewRequestId: String!
+}
+
+type createOfferResponse {
+    ok: Boolean!
+}
+
+type Mutation {
+    createOffer(input: createOfferInput): createOfferResponse!
+}

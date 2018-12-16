@@ -1,6 +1,7 @@
 import "babel-polyfill";
 
 import CodeReviewRequest from "../../models/CodeReviewRequest";
+import Offer from "../../models/Offer";
 import User from "../../models/User";
 
 export const resolvers = {
@@ -18,8 +19,20 @@ export const resolvers = {
         }
     },
     Query: {
-        listCodeReviewRequest: () => {
-            return CodeReviewRequest.find();
+        listCodeReviewRequest: async () => {
+            const allRequests = await CodeReviewRequest.find();
+            var i = 0;
+            var final = [];
+            for (i = 0; i < allRequests.length; i++) {
+                const valid = await Offer.findOne({
+                    accepted: true,
+                    codeReviewRequestId: allRequests[i]._id
+                });
+                if (!valid) {
+                    final.push(allRequests[i]);
+                }
+            }
+            return final;
         }
     }
 };

@@ -1,0 +1,27 @@
+type Owner {
+    id: ID!
+    username: String!
+    email: String!
+}
+
+type CodeReviewRequest {
+    id: ID!
+    numDays: Int
+    codeUrl: String!
+    techTags: [String!]!
+    notes: String!
+    userId: String!
+    owner: Owner
+}
+
+type Offer {
+    codeReviewRequestId: String!
+    userId: String!
+    accepted: Boolean!
+    offerSender: Owner!
+    codeReviewRequest: CodeReviewRequest!
+}
+
+type Query {
+    receivedOffers: [Offer!]!
+}

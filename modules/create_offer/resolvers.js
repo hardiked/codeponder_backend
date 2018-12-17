@@ -12,10 +12,18 @@ export const resolvers = {
             const offer = new Offer();
             offer.userId = input.userId;
             offer.codeReviewRequestId = input.codeReviewRequestId;
-            await offer.save();
-            return {
-                ok: true
-            };
+            try {
+                const data = await offer.save();
+                return {
+                    ok: true
+                };
+            } catch (err) {
+                if (err.errmsg.includes("duplicate")) {
+                    return {
+                        ok: false
+                    };
+                }
+            }
         }
     }
 };

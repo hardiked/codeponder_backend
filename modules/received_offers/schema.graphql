@@ -17,11 +17,25 @@ type CodeReviewRequest {
 type Offer {
     codeReviewRequestId: String!
     userId: String!
-    accepted: Boolean!
+    status: String!
     offerSender: Owner!
-    codeReviewRequest: CodeReviewRequest!
+    codeReviewRequest: CodeReviewRequest
 }
 
 type Query {
     receivedOffers: [Offer!]!
+}
+
+type updateOfferStatusReponse {
+    offer: Offer
+}
+
+input updateOfferStatusInput {
+    userId: String!
+    status: String!
+    codeReviewRequestId: String!
+}
+
+type Mutation {
+    updateOfferStatus(input: updateOfferStatusInput!): updateOfferStatusReponse!
 }

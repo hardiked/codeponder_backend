@@ -24,6 +24,7 @@ type Offer {
 
 type Query {
     receivedOffers: [Offer!]!
+    myOffers: [Offer!]!
 }
 
 type updateOfferStatusReponse {

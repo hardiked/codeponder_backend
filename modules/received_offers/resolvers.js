@@ -36,13 +36,44 @@ export const resolvers = {
                         var offer = {};
                         offer.codeReviewRequestId = data[j].codeReviewRequestId;
                         offer.userId = data[j].userId;
-                        offer.accepted = data[j].accepted;
+                        offer.status = data[j].status;
                         offer.codeReviewRequest = reviewsRequestCreated[i];
                         final.push(offer);
                     }
                 }
             }
             return final;
+        }
+    },
+
+    Mutation: {
+        updateOfferStatus: async (
+            _,
+            { input: { userId, codeReviewRequestId, status } },
+            { session }
+        ) => {
+            let offer = await Offer.findOne({
+                userId: userId,
+                codeReviewRequestId: codeReviewRequestId
+            });
+            if (offer) {
+                offer.status = status;
+                await offer.save();
+                const codeReviewReqest = await CodeReviewRequest.findById(
+                    codeReviewRequestId
+                );
+                var final = {};
+
+                final.codeReviewRequestId = codeReviewRequestId;
+                final.userId = userId;
+                final.status = status;
+                final.codeReviewRequest = codeReviewReqest;
+                return { offer: final };
+            } else {
+                return {
+                    offer: null
+                };
+            }
         }
     }
 };

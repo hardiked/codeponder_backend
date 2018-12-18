@@ -25,7 +25,7 @@ export const resolvers = {
             var final = [];
             for (i = 0; i < allRequests.length; i++) {
                 const valid = await Offer.findOne({
-                    accepted: true,
+                    status: "Completed",
                     codeReviewRequestId: allRequests[i]._id
                 });
                 if (!valid) {

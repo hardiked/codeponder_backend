@@ -19,6 +19,28 @@ export const resolvers = {
     },
 
     Query: {
+        myOffers: async (_, __, { session }) => {
+            const offersCreated = await Offer.find({
+                userId: session.userId
+            });
+            var i = 0;
+            var final = [];
+            for (i = 0; i < offersCreated.length; i++) {
+                const data = await CodeReviewRequest.findById(
+                    offersCreated[i].codeReviewRequestId
+                );
+                if (data) {
+                    var offer = {};
+                    offer.codeReviewRequestId =
+                        offersCreated[i].codeReviewRequestId;
+                    offer.userId = offersCreated[i].userId;
+                    offer.status = offersCreated[i].status;
+                    offer.codeReviewRequest = data;
+                    final.push(offer);
+                }
+            }
+            return final;
+        },
         receivedOffers: async (_, __, { session }) => {
             const reviewsRequestCreated = await CodeReviewRequest.find({
                 userId: session.userId
@@ -29,7 +51,6 @@ export const resolvers = {
                 const data = await Offer.find({
                     codeReviewRequestId: reviewsRequestCreated[i]._id
                 });
-                console.log(data);
                 if (data) {
                     var j = 0;
                     for (j = 0; j < data.length; j++) {

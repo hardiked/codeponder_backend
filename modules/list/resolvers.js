@@ -19,16 +19,18 @@ export const resolvers = {
         }
     },
     Query: {
-        listCodeReviewRequest: async () => {
-            const allRequests = await CodeReviewRequest.find();
+        listCodeReviewRequest: async (_, __, { session }) => {
+            const allRequests = await CodeReviewRequest.find({
+                userId: { $ne: session.userId }
+            });
             var i = 0;
             var final = [];
             for (i = 0; i < allRequests.length; i++) {
-                const valid = await Offer.findOne({
+                const valid = await Offer.find({
                     status: "Completed",
                     codeReviewRequestId: allRequests[i]._id
                 });
-                if (!valid) {
+                if (valid.length === 0) {
                     final.push(allRequests[i]);
                 }
             }

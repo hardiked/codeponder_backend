@@ -1,6 +1,7 @@
 import "babel-polyfill";
 
 import CodeReviewRequest from "../../models/CodeReviewRequest";
+import User from "../../models/User";
 
 export const resolvers = {
     Query: {
@@ -8,9 +9,8 @@ export const resolvers = {
     },
 
     CodeReviewRequest: {
-        owner: ({ userId }, _, __) => {
-            console.log("userId: ", userId);
-            return null;
+        owner: async ({ userId }, _, __) => {
+            return await userId.findById(userId);
         }
     },
 

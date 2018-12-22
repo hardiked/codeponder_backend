@@ -1,11 +1,12 @@
 # import Error from '../../shared.graphql'
 
-type User{
-	id: ID!
-	username: String!
-	email: String!
+type User {
+    id: ID!
+    username: String!
+    pictureUrl: String!
+    bio: String!
 }
 
-type Query{
-	me: User
+type Query {
+    me: User
 }

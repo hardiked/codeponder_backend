@@ -1,3 +1,4 @@
+require("dotenv-safe").config();
 import "babel-polyfill";
 import * as fs from "fs";
 import { importSchema } from "graphql-import";
@@ -11,6 +12,7 @@ import connectRedis from "connect-redis";
 const RateLimit = require("express-rate-limit");
 var RateLimitRedis = require("rate-limit-redis");
 import passport from "passport";
+import { Strategy as GitHubStrategy } from "passport-github";
 import { Strategy } from "passport-twitter";
 
 import User from "./models/User";
@@ -94,7 +96,7 @@ export const startServer = async () => {
     });
 
     await mongoose.connect(
-        "mongodb://localhost:27017/codeponder",
+        "mongodb://localhost:27017/recreate",
         { useNewUrlParser: true },
         function(err) {
             if (err) {
@@ -104,6 +106,46 @@ export const startServer = async () => {
                 console.log(process.env.NODE_ENV);
                 console.log("Connected successfully");
             }
+        }
+    );
+
+    passport.use(
+        new GitHubStrategy(
+            {
+                clientID: process.env.GITHUB_CLIENT_ID,
+                clientSecret: process.env.GITHUB_CLIENT_SECRET,
+                callbackURL: "http://localhost:4000/oauth/github"
+            },
+            async (accessToken, refreshToken, profile, cb) => {
+                let user = await User.findOne({ githubId: profile.id });
+                if (!user) {
+                    console.log(refreshToken);
+                    user = new User();
+                    user.username = profile.username;
+                    user.githubId = profile.id;
+                    user.pictureUrl = profile._json.avatar_url;
+                    user.bio = profile._json.bio;
+                    await user.save();
+                }
+                cb(null, {
+                    user,
+                    accessToken,
+                    refreshToken
+                });
+            }
+        )
+    );
+
+    server.express.get("/auth/github", passport.authenticate("github"));
+
+    server.express.get(
+        "/oauth/github",
+        passport.authenticate("github", { session: false }),
+        function(req, res) {
+            req.session.userId = req.user.user._id;
+            req.session.refreshToken = req.user.refreshToken;
+            req.session.accessToken = req.user.accessToken;
+            res.redirect("http://localhost:3000");
         }
     );
 

@@ -119,19 +119,31 @@ export const startServer = async () => {
             async (accessToken, refreshToken, profile, cb) => {
                 let user = await User.findOne({ githubId: profile.id });
                 if (!user) {
-                    console.log(refreshToken);
                     user = new User();
                     user.username = profile.username;
                     user.githubId = profile.id;
                     user.pictureUrl = profile._json.avatar_url;
                     user.bio = profile._json.bio;
-                    await user.save();
+                    user.name = profile._json.name;
+                    try {
+                        await user.save();
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    cb(null, {
+                        user,
+                        accessToken,
+                        refreshToken,
+                        signup: true
+                    });
+                } else {
+                    cb(null, {
+                        user,
+                        accessToken,
+                        refreshToken,
+                        signup: false
+                    });
                 }
-                cb(null, {
-                    user,
-                    accessToken,
-                    refreshToken
-                });
             }
         )
     );
@@ -142,10 +154,14 @@ export const startServer = async () => {
         "/oauth/github",
         passport.authenticate("github", { session: false }),
         function(req, res) {
-            req.session.userId = req.user.user._id;
-            req.session.refreshToken = req.user.refreshToken;
-            req.session.accessToken = req.user.accessToken;
-            res.redirect("http://localhost:3000");
+            if (req.user.user.id) {
+                req.session.userId = req.user.user.id;
+                req.session.refreshToken = req.user.refreshToken;
+                req.session.accessToken = req.user.accessToken;
+            }
+            req.user.signup
+                ? res.redirect("http://localhost:3000/profile/edit")
+                : res.redirect("http://localhost:3000");
         }
     );
 

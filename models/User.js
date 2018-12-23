@@ -4,7 +4,8 @@ import "babel-polyfill";
 import * as bcrypt from "bcryptjs";
 
 var UserSchema = new Schema({
-    username: { type: String, default: null },
+    username: { type: String, default: null, unique: true },
+    name: { type: String },
     twitterId: { type: String, default: null },
     githubId: { type: String, unique: true },
     pictureUrl: { type: String, default: null },

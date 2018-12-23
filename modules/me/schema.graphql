@@ -5,6 +5,7 @@ type User {
     username: String!
     pictureUrl: String!
     bio: String!
+    accessToken: String!
 }
 
 type Query {

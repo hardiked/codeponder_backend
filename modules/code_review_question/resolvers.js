@@ -1,4 +1,5 @@
 import "babel-polyfill";
+var mongoose = require("mongoose");
 
 import CodeReviewQuestion from "../../models/CodeReviewQuestion";
 import User from "../../models/User";
@@ -6,6 +7,12 @@ import User from "../../models/User";
 export const resolvers = {
     Query: {
         bye13: () => "Bye"
+    },
+
+    Response: {
+        created_at: ({ id }, _, __) => {
+            return mongoose.Types.ObjectId(id).getTimestamp();
+        }
     },
 
     Mutation: {

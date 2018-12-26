@@ -1,0 +1,31 @@
+# import Error from '../../shared.graphql'
+type Query {
+    bye13: String!
+}
+
+input CreateCodeReviewQuestionInput {
+    startingLineNumber: Int!
+    endingLineNumber: Int!
+    question: String!
+    path: String!
+    repo: String!
+    username: String!
+    branch: String!
+}
+
+type Response {
+    id: String
+    startingLineNumber: Int
+    endingLineNumber: Int
+    question: String
+    path: String
+    repo: String
+    username: String
+    branch: String
+    creatorId: String
+    errors: [Error!]
+}
+
+type Mutation {
+    createCodeReviewQuestion(input: CreateCodeReviewQuestionInput!): Response
+}

@@ -6,7 +6,27 @@ import User from "../../models/User";
 
 export const resolvers = {
     Query: {
-        bye13: () => "Bye"
+        findCodeReviewQuestion: async (
+            _,
+            { path, repo, branch, username },
+            {}
+        ) => {
+            return await CodeReviewQuestion.find({
+                $or: [
+                    {
+                        path: path,
+                        branch: branch,
+                        repo: repo,
+                        username: username
+                    },
+                    {
+                        branch: branch,
+                        repo: repo,
+                        username: username
+                    }
+                ]
+            });
+        }
     },
 
     Response: {

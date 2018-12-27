@@ -1,7 +1,4 @@
 # import Error from '../../shared.graphql'
-type Query {
-    bye13: String!
-}
 
 input CreateCodeReviewQuestionInput {
     startingLineNumber: Int!
@@ -29,4 +26,13 @@ type Response {
 
 type Mutation {
     createCodeReviewQuestion(input: CreateCodeReviewQuestionInput!): Response
+}
+
+type Query {
+    findCodeReviewQuestion(
+        path: String
+        repo: String!
+        branch: String!
+        username: String!
+    ): [Response]
 }

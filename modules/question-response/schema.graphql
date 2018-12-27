@@ -1,0 +1,22 @@
+# import Error from '../../shared.graphql'
+
+type Query {
+    dummy1: String
+}
+
+input createQuestionResponseInput {
+    response: String!
+    questionId: String!
+}
+
+type createQuestionResponseResponse {
+    response: String!
+    questionId: String!
+    errors: [Error!]
+}
+
+type Mutation {
+    createQuestionResponse(
+        input: createQuestionResponseInput
+    ): createQuestionResponseResponse
+}

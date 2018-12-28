@@ -10,6 +10,12 @@ input CreateCodeReviewQuestionInput {
     branch: String!
 }
 
+type replies {
+    id: String
+    response: String
+    creatorId: String
+}
+
 type Response {
     id: String
     startingLineNumber: Int
@@ -22,6 +28,7 @@ type Response {
     creatorId: String
     errors: [Error!]
     created_at: String
+    replies: [replies]
 }
 
 type Mutation {

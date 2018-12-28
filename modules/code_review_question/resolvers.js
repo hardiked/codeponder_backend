@@ -3,6 +3,7 @@ var mongoose = require("mongoose");
 
 import CodeReviewQuestion from "../../models/CodeReviewQuestion";
 import User from "../../models/User";
+import QuestionResponse from "../../models/QuestionResponse";
 
 export const resolvers = {
     Query: {
@@ -32,6 +33,9 @@ export const resolvers = {
     Response: {
         created_at: ({ id }, _, __) => {
             return mongoose.Types.ObjectId(id).getTimestamp();
+        },
+        replies: async ({ id }, _, __) => {
+            return await QuestionResponse.find({ questionId: id });
         }
     },
 

@@ -6,6 +6,11 @@ import User from "../../models/User";
 import QuestionResponse from "../../models/QuestionResponse";
 
 export const resolvers = {
+    replies: {
+        user: async ({ creatorId }, _, __) => {
+            return await User.findById(creatorId);
+        }
+    },
     Query: {
         findCodeReviewQuestion: async (
             _,
@@ -36,6 +41,9 @@ export const resolvers = {
         },
         replies: async ({ id }, _, __) => {
             return await QuestionResponse.find({ questionId: id });
+        },
+        user: async ({ creatorId }, _, __) => {
+            return await User.findById(creatorId);
         }
     },
 

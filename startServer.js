@@ -16,6 +16,8 @@ import { Strategy as GitHubStrategy } from "passport-github";
 import { Strategy } from "passport-twitter";
 
 import User from "./models/User";
+import { userLoader } from "./loaders/UserLoader";
+import { responseLoader } from "./loaders/ResponseLoader";
 
 const RedisStore = connectRedis(session);
 
@@ -40,7 +42,9 @@ export const startServer = async () => {
             url: request.protocol + "://" + request.get("host"),
             session: request.session,
             req: request,
-            res: response
+            res: response,
+            userLoader: userLoader(),
+            responseLoader: responseLoader()
         })
     });
 

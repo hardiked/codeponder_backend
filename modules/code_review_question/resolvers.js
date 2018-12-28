@@ -7,9 +7,8 @@ import QuestionResponse from "../../models/QuestionResponse";
 
 export const resolvers = {
     replies: {
-        user: async ({ creatorId }, _, __) => {
-            return await User.findById(creatorId);
-        }
+        user: async ({ creatorId }, _, { userLoader }) =>
+            userLoader.load(creatorId)
     },
     Query: {
         findCodeReviewQuestion: async (
@@ -39,12 +38,12 @@ export const resolvers = {
         created_at: ({ id }, _, __) => {
             return mongoose.Types.ObjectId(id).getTimestamp();
         },
-        replies: async ({ id }, _, __) => {
-            return await QuestionResponse.find({ questionId: id });
-        },
-        user: async ({ creatorId }, _, __) => {
-            return await User.findById(creatorId);
-        }
+
+        replies: async ({ id }, _, { responseLoader }) =>
+            responseLoader.load(id),
+
+        user: async ({ creatorId }, _, { userLoader }) =>
+            userLoader.load(creatorId)
     },
 
     Mutation: {

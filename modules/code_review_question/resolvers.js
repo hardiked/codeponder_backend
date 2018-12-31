@@ -82,6 +82,8 @@ export const resolvers = {
                 codeReviewQuestion.repo = input.repo;
                 codeReviewQuestion.username = input.username;
                 codeReviewQuestion.branch = input.branch;
+                codeReviewQuestion.programmingLanguages =
+                    input.programmingLanguages;
                 codeReviewQuestion.creatorId = session.userId;
                 await codeReviewQuestion.save();
                 return codeReviewQuestion;

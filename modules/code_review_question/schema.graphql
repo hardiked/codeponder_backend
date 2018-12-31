@@ -6,6 +6,7 @@ input CreateCodeReviewQuestionInput {
     endingLineNumber: Int!
     question: String!
     path: String!
+    programmingLanguages: String
     repo: String!
     username: String!
     branch: String!
@@ -23,6 +24,7 @@ type Response {
     startingLineNumber: Int
     endingLineNumber: Int
     question: String
+    programmingLanguages: String
     path: String
     repo: String
     username: String

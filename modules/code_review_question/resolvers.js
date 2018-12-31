@@ -11,6 +11,9 @@ export const resolvers = {
             userLoader.load(creatorId)
     },
     Query: {
+        count: async (_, __, ___) => {
+            return await CodeReviewQuestion.find().count();
+        },
         findCodeReviewQuestion: async (
             _,
             { path, repo, branch, username },
@@ -32,7 +35,7 @@ export const resolvers = {
                 ]
             });
         },
-        homeQuestions: async (_, __, {}) => {
+        homeQuestions: async (_, { offset, limit }, {}) => {
             // let questions = await CodeReviewQuestion.aggregate([
             //     {
             //         $group: {
@@ -54,7 +57,9 @@ export const resolvers = {
             //     }
             // ]);
             // console.log(questions);
-            return await CodeReviewQuestion.find({});
+            return await CodeReviewQuestion.find()
+                .skip(offset)
+                .limit(limit);
         }
     },
 

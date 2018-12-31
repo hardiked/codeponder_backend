@@ -47,5 +47,6 @@ type Query {
         branch: String!
         username: String!
     ): [Response]
-    homeQuestions: [Response]
+    homeQuestions(offset: Int, limit: Int): [Response]
+    count: Int!
 }

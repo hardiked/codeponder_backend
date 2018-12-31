@@ -31,6 +31,30 @@ export const resolvers = {
                     }
                 ]
             });
+        },
+        homeQuestions: async (_, __, {}) => {
+            // let questions = await CodeReviewQuestion.aggregate([
+            //     {
+            //         $group: {
+            //             _id: {
+            //                 repo: "$repo",
+            //                 username: "$username",
+            //                 startingLineNumber: "$startingLineNumber",
+            //                 branch: "$branch"
+            //             }
+            //         }
+            //     },
+            //     {
+            //         $project: {
+            //             repo: "$_id.repo",
+            //             branch: "$_id.branch",
+            //             startingLineNumber: "$_id.startingLineNumber",
+            //             username: "$_id.username"
+            //         }
+            //     }
+            // ]);
+            // console.log(questions);
+            return await CodeReviewQuestion.find({});
         }
     },
 

@@ -45,4 +45,5 @@ type Query {
         branch: String!
         username: String!
     ): [Response]
+    homeQuestions: [Response]
 }

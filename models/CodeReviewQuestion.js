@@ -7,6 +7,7 @@ var CodeReviewQuestionSchema = new Schema({
     startingLineNumber: { type: Number },
     endingLineNumber: { type: Number },
     question: { type: String },
+    programmingLanguages: { type: String },
     path: { type: String },
     branch: { type: String },
     repo: { type: String },

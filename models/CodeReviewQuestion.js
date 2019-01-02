@@ -7,13 +7,11 @@ var CodeReviewQuestionSchema = new Schema({
     startingLineNumber: { type: Number },
     endingLineNumber: { type: Number },
     question: { type: String },
+    postId: { type: String },
     programmingLanguages: { type: String },
     path: { type: String },
-    branch: { type: String },
-    repo: { type: String },
-    username: { type: String },
-    creatorId: { type: String },
-    creator: { type: String }
+    codeSnippet: { type: String },
+    creatorId: { type: String }
 });
 
 module.exports = mongoose.model("CodeReviewQuestion", CodeReviewQuestionSchema);

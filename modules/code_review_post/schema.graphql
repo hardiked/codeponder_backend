@@ -1,0 +1,29 @@
+input createCodeReviewPostInput {
+    programmingLanguages: [String!]
+    topics: [String!]
+    repo: String!
+    commitId: String!
+    repoOwner: String!
+    description: String
+}
+
+type createCodeReviewPostResponse {
+    id: String!
+    programmingLanguages: [String!]
+    topics: [String!]
+    repo: String!
+    commitId: String!
+    repoOwner: String!
+    creatorId: String!
+    description: String
+}
+
+type Query {
+    getPostById(id: String!): createCodeReviewPostResponse
+}
+
+type Mutation {
+    findOrCreateCodeReviewPost(
+        input: createCodeReviewPostInput
+    ): createCodeReviewPostResponse
+}

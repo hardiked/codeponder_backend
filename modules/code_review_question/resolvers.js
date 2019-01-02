@@ -14,23 +14,15 @@ export const resolvers = {
         count: async (_, __, ___) => {
             return await CodeReviewQuestion.find().count();
         },
-        findCodeReviewQuestion: async (
-            _,
-            { path, repo, branch, username },
-            {}
-        ) => {
+        findCodeReviewQuestion: async (_, { path, postId }, {}) => {
             return await CodeReviewQuestion.find({
                 $or: [
                     {
                         path: path,
-                        branch: branch,
-                        repo: repo,
-                        username: username
+                        postId: postId
                     },
                     {
-                        branch: branch,
-                        repo: repo,
-                        username: username
+                        postId: postId
                     }
                 ]
             });
@@ -84,9 +76,8 @@ export const resolvers = {
                 codeReviewQuestion.endingLineNumber = input.endingLineNumber;
                 codeReviewQuestion.question = input.question;
                 codeReviewQuestion.path = input.path;
-                codeReviewQuestion.repo = input.repo;
-                codeReviewQuestion.username = input.username;
-                codeReviewQuestion.branch = input.branch;
+                codeReviewQuestion.postId = input.postId;
+                codeReviewQuestion.codeSnippet = input.codeSnippet;
                 codeReviewQuestion.programmingLanguages =
                     input.programmingLanguages;
                 codeReviewQuestion.creatorId = session.userId;

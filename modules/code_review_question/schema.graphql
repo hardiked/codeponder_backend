@@ -5,11 +5,10 @@ input CreateCodeReviewQuestionInput {
     startingLineNumber: Int!
     endingLineNumber: Int!
     question: String!
+    postId: String!
     path: String!
     programmingLanguages: String
-    repo: String!
-    username: String!
-    branch: String!
+    codeSnippet: String!
 }
 
 type replies {
@@ -24,11 +23,9 @@ type Response {
     startingLineNumber: Int
     endingLineNumber: Int
     question: String
+    codeSnippet: String!
     programmingLanguages: String
     path: String
-    repo: String
-    username: String
-    branch: String
     creatorId: String
     errors: [Error!]
     created_at: String
@@ -41,12 +38,7 @@ type Mutation {
 }
 
 type Query {
-    findCodeReviewQuestion(
-        path: String
-        repo: String!
-        branch: String!
-        username: String!
-    ): [Response]
+    findCodeReviewQuestion(path: String, postId: String!): [Response]
     homeQuestions(offset: Int, limit: Int): [Response]
     count: Int!
 }
